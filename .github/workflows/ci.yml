@@ -1,0 +1,72 @@
+name: Payment transaction platform CI
+on:
+  push:
+  pull_request:
+jobs:
+  offline-core-and-compile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Compile both Java source trees and run dependency-free regression tests
+        run: ./verify-local.sh
+
+  postgres-integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Verify PostgreSQL migrations, constraints, and multi-instance behavior
+        run: ./verify-production.sh
+
+  browser-automation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: browser-actions/setup-chrome@v1
+      - name: Configure ephemeral CI credentials
+        run: |
+          cat > .env <<'ENV'
+          DB_PASSWORD=ci-only-db-password-92f1
+          API_BEARER_TOKEN=ci-only-api-token-3d8a-5bf2-9a77-0b42
+          OPS_BEARER_TOKEN=ci-only-ops-token-8e21-7a39-4c60-9d11
+          APP_ENV=development
+          HTTP_PORT=8080
+          DB_POOL_SIZE=8
+          MAX_RETRIES=5
+          HTTP_THREADS=16
+          ENABLE_TEST_FAULT_INJECTION=false
+          ENV
+      - name: Start PostgreSQL and two application instances
+        run: docker compose up --build -d
+      - name: Wait for local endpoint
+        run: |
+          for i in $(seq 1 60); do
+            if curl --fail --silent http://localhost:8080/health/live; then exit 0; fi
+            sleep 2
+          done
+          docker compose ps
+          docker compose logs
+          exit 1
+      - name: Run Selenium/Cucumber/TestNG suite
+        run: ./verify-automation.sh
+      - name: Upload browser test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: selenium-cucumber-reports
+          path: automation-tests/target/cucumber-report.*
+          if-no-files-found: warn
+      - name: Stop local stack
+        if: always()
+        run: docker compose down -v

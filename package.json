@@ -1,0 +1,13 @@
+{
+  "name": "payment-transaction-platform",
+  "private": true,
+  "workspaces": [
+    "ui"
+  ],
+  "scripts": {
+    "install:ui": "npm install --workspace ui",
+    "dev": "npm run dev --workspace ui",
+    "build": "npm run build --workspace ui",
+    "preview": "npm run preview --workspace ui"
+  }
+}

@@ -1,0 +1,22 @@
+# Local environment and secrets
+.env
+*.pem
+*.key
+
+# Java/Maven build output
+/build/
+/target/
+/production-multinode/target/
+/automation-tests/target/
+/automation-tests/.tools/
+
+# Local demo persistence and logs
+/data/transaction-state.tsv
+/data/transaction-state.tsv.tmp
+*.log
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

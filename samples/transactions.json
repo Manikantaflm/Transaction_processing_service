@@ -1,0 +1,69 @@
+[
+  {
+    "transactionId": "TXN-2002",
+    "requestId": "REQ-2",
+    "idempotencyKey": "KEY-2",
+    "accountId": "ACC-201",
+    "transactionType": "DEBIT",
+    "amount": 40.00,
+    "currency": "USD",
+    "sequenceNumber": 2,
+    "eventTime": "2026-10-10T08:02:00Z"
+  },
+  {
+    "transactionId": "TXN-2001",
+    "requestId": "REQ-1",
+    "idempotencyKey": "KEY-1",
+    "accountId": "ACC-201",
+    "transactionType": "CREDIT",
+    "amount": 100.00,
+    "currency": "USD",
+    "sequenceNumber": 1,
+    "eventTime": "2026-10-10T08:01:00Z"
+  },
+  {
+    "transactionId": "TXN-2002",
+    "requestId": "REQ-2-REPLAY",
+    "idempotencyKey": "KEY-2-REPLAY",
+    "accountId": "ACC-201",
+    "transactionType": "DEBIT",
+    "amount": 40.00,
+    "currency": "USD",
+    "sequenceNumber": 2,
+    "eventTime": "2026-10-10T08:02:00Z"
+  },
+  {
+    "transactionId": "TXN-2003",
+    "requestId": "REQ-3",
+    "idempotencyKey": "KEY-3",
+    "accountId": "ACC-201",
+    "transactionType": "CREDIT",
+    "amount": 25.00,
+    "currency": "USD",
+    "sequenceNumber": 3,
+    "eventTime": "2026-10-10T08:03:00Z"
+  },
+  {
+    "transactionId": "TXN-2004",
+    "requestId": "REQ-4",
+    "idempotencyKey": "KEY-4",
+    "accountId": "ACC-202",
+    "transactionType": "DEBIT",
+    "amount": -10.00,
+    "currency": "USD",
+    "sequenceNumber": 1,
+    "eventTime": "2026-10-10T08:04:00Z"
+  },
+  {
+    "transactionId": "TXN-2005",
+    "requestId": "REQ-5",
+    "idempotencyKey": "KEY-5",
+    "accountId": "ACC-203",
+    "transactionType": "CREDIT",
+    "amount": 500.00,
+    "currency": "USD",
+    "sequenceNumber": 1,
+    "eventTime": "2026-10-10T08:05:00Z",
+    "transientFailuresToSimulate": 1
+  }
+]
